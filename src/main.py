@@ -1,10 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from module.chat_ai import ChatAI
-
-class ImageAnalyzer(BaseModel):
-        chat_prompt: str
-        base64: str
+from model.image_analyzer import ImageAnalyzer
 
 app = FastAPI()
 
@@ -12,7 +8,7 @@ app = FastAPI()
 async def analyze_image_async(data: ImageAnalyzer):
     chat = ChatAI()
     try:
-        response = chat.analyze_image(data.chat_prompt, data.base64)
+        response = chat.analyze_image(data)
         return response
     except Exception as e:
         print(e)
