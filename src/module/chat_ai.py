@@ -6,13 +6,14 @@ from model.image_analyzer import ImageAnalyzer
 
 class ChatAI:
         def __init__(self):
-            load_dotenv()
+            self.api_key_name='MISTRAL_API_KEY'
             self.model = "pixtral-12b-2409"
+            load_dotenv()
 
-            if ('MISTRAL_API_KEY' not in os.environ):
-                raise Exception("Missing API key")
+            if (self.api_key_name not in os.environ):
+                raise ValueError("Missing API key")
 
-            self.client = Mistral(os.environ.get("MISTRAL_API_KEY"))
+            self.client = Mistral(os.environ.get(self.api_key_name))
 
         def analyze_image(self, analyzer: ImageAnalyzer):
             chat_response = self.client.chat.complete(
