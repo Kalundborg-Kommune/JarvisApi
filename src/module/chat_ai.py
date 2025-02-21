@@ -1,29 +1,35 @@
 import base64
 import os
+from dotenv import load_dotenv
 from mistralai import Mistral
-from mistralai.models import UserMessage
 
 class ChatAI:
         def __init__(self):
+            load_dotenv()
             self.model = "pixtral-12b-2409"
-            self.client = Mistral(os.environ.get('MISTRAL_API_KEY', None))
 
-        async def analyze_image_async(self, base64):
-            chat_response = await self.client.chat.complete_async(
+            if ('MISTRAL_API_KEY' not in os.environ):
+                raise Exception("Missing API key")
+
+            self.client = Mistral(os.environ.get("MISTRAL_API_KEY"))
+
+        def analyze_image_async(self, prompt, base64):
+            chat_response = self.client.chat.complete(
                 model=self.model,
                 messages=[
-                    UserMessage(
-                        content=[
+                    {
+                        "role": "user",
+                        "content": [
                             {
                                 "type": "text",
-                                "text": "Udtræk informationer fra denne kvittering"
+                                "text": f"{prompt}"
                             },
                             {
                                 "type": "image_url",
                                 "image_url": f"data:image/jpeg;base64,{base64}"
                             }
                         ]
-                    )
+                    }
                 ]
             )
 
