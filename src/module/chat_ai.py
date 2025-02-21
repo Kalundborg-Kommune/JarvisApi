@@ -13,7 +13,7 @@ class ChatAI:
 
             self.client = Mistral(os.environ.get("MISTRAL_API_KEY"))
 
-        def analyze_image_async(self, prompt, base64):
+        def analyze_image(self, prompt, base64):
             chat_response = self.client.chat.complete(
                 model=self.model,
                 messages=[
