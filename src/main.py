@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 @app.post("/analyze-image")
-async def analyze_image_async(data: ImageAnalyzer):
+def analyze_image(data: ImageAnalyzer):
     try:
         chat = ChatAI()
         response = chat.analyze_image(data)
